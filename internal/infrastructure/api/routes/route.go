@@ -6,18 +6,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 	config "github.com/hafiihzafarhana/DDD-With-Go/internal/configs"
-	routes "github.com/hafiihzafarhana/DDD-With-Go/internal/interfaces/api/routes/routes"
+	"github.com/hafiihzafarhana/DDD-With-Go/internal/infrastructure/api/routes/routes"
 )
 
 var PORT string
 
 func StartApp() {
-	config.GetPostgresInstance()
+	db := config.GetPostgresInstance()
 
 	r := gin.Default()
 	route := r.Group("/api")
 
-	routes.UserRoute(route)
+	routes.UserRoute(route, db)
 
 	if PORT = os.Getenv("PORT"); PORT == "" {
 		PORT = "3000"

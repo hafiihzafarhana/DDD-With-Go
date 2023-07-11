@@ -19,10 +19,6 @@ type databaseConfig struct {
 	dbName   string
 }
 
-type DbPG struct {
-	Db *gorm.DB
-}
-
 var (
 	db  *gorm.DB
 	err error
@@ -30,7 +26,7 @@ var (
 
 func GetDBConfig() gorm.Dialector {
 	err := godotenv.Load("./../.env")
-	
+
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}

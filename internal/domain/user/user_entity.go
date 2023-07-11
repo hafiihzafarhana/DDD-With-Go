@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/hafiihzafarhana/DDD-With-Go/internal/domain/task"
+	"github.com/hafiihzafarhana/DDD-With-Go/pkg/errors"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserEntity struct {
@@ -13,6 +15,18 @@ type UserEntity struct {
 	Password  string            `gorm:"not null"`
 	Role      string            `gorm:"not null"`
 	Tasks     []task.TaskEntity `gorm:"foreignKey:UserID"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt time.Time         `gorm:"autoCreateTime"`
+	UpdatedAt time.Time         `gorm:"autoUpdateTime"`
+}
+
+func (u *UserEntity) HashPassword() errors.MessageErr {
+	const cost = 8
+
+	bs, err := bcrypt.GenerateFromPassword([]byte(u.Password), cost)
+	if err != nil {
+		return errors.NewInternalServerError("something went wrong")
+	}
+
+	u.Password = string(bs)
+	return nil
 }

@@ -40,4 +40,4 @@
 
 ## Prettier For Go Language
 
-`gofmt -w /.`
+`gofmt -w ./`
