@@ -6,10 +6,10 @@ import (
 	"github.com/hafiihzafarhana/DDD-With-Go/internal/domain/task"
 )
 
-type Category struct {
-	ID        uint   `gorm:"primaryKey"`
-	Type      string `gorm:"not null"`
-	Tasks     []task.Task
+type CategoryEntity struct {
+	ID        uint              `gorm:"primaryKey"`
+	Type      string            `gorm:"not null"`
+	Tasks     []task.TaskEntity `gorm:"foreignKey:CategoryID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

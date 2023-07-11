@@ -7,15 +7,15 @@ import (
 )
 
 type Entities struct {
-	User     *user.User
-	Category *category.Category
-	Task     *task.Task
+	UserEntity     *user.UserEntity
+	CategoryEntity *category.CategoryEntity
+	TaskEntity     *task.TaskEntity
 }
 
 func NewEntities() *Entities {
 	return &Entities{
-		User:     &user.User{},
-		Category: &category.Category{},
-		Task:     &task.Task{},
+		UserEntity:     &user.UserEntity{},
+		CategoryEntity: &category.CategoryEntity{},
+		TaskEntity:     &task.TaskEntity{},
 	}
 }

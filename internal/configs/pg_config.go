@@ -19,6 +19,10 @@ type databaseConfig struct {
 	dbName   string
 }
 
+type DbPG struct {
+	Db *gorm.DB
+}
+
 var (
 	db  *gorm.DB
 	err error
@@ -26,7 +30,7 @@ var (
 
 func GetDBConfig() gorm.Dialector {
 	err := godotenv.Load("./../.env")
-
+	
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -61,7 +65,7 @@ func init() {
 	}
 
 	entities := app.NewEntities()
-	if err = db.AutoMigrate(entities.User, entities.Category, entities.Task); err != nil {
+	if err = db.AutoMigrate(entities.UserEntity, entities.CategoryEntity, entities.TaskEntity); err != nil {
 		log.Fatalln("Gagal 2")
 		log.Fatalln(err.Error())
 	}
