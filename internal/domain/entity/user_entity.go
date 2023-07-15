@@ -1,9 +1,8 @@
-package user
+package entities
 
 import (
 	"time"
 
-	"github.com/hafiihzafarhana/DDD-With-Go/internal/domain/task"
 	"github.com/hafiihzafarhana/DDD-With-Go/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -14,7 +13,7 @@ type UserEntity struct {
 	Email     string            `gorm:"not null;unique;type:varchar(191)"`
 	Password  string            `gorm:"not null"`
 	Role      string            `gorm:"not null"`
-	Tasks     []task.TaskEntity `gorm:"foreignKey:UserID"`
+	Tasks     []TaskEntity `gorm:"foreignKey:UserID"`
 	CreatedAt time.Time         `gorm:"autoCreateTime"`
 	UpdatedAt time.Time         `gorm:"autoUpdateTime"`
 }

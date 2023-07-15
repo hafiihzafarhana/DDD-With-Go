@@ -1,13 +1,14 @@
-package user
+package repositories
 
 import (
+	entities "github.com/hafiihzafarhana/DDD-With-Go/internal/domain/entity"
 	"github.com/hafiihzafarhana/DDD-With-Go/pkg/errors"
 	"gorm.io/gorm"
 )
 
 type UserRepository interface {
 	// Register(payload UserEntity)
-	Register(payload UserEntity) (*UserEntity, errors.MessageErr)
+	Register(payload entities.UserEntity) (*entities.UserEntity, errors.MessageErr)
 }
 
 // ini harus lokal
@@ -20,7 +21,7 @@ func NewUserPG(db *gorm.DB) UserRepository {
 	return &userRepository{db: db}
 }
 
-func (u *userRepository) Register(payload UserEntity) (*UserEntity, errors.MessageErr) {
+func (u *userRepository) Register(payload entities.UserEntity) (*entities.UserEntity, errors.MessageErr) {
 	if err := u.db.Create(&payload).Error; err != nil {
 		return nil, errors.NewInternalServerError("something went wrong")
 	}

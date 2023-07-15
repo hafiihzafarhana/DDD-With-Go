@@ -6,16 +6,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/hafiihzafarhana/DDD-With-Go/internal/domain/user"
+	services "github.com/hafiihzafarhana/DDD-With-Go/internal/domain/service"
 	"github.com/hafiihzafarhana/DDD-With-Go/internal/infrastructure/dtos"
 	"github.com/hafiihzafarhana/DDD-With-Go/pkg/errors"
 )
 
 type userHandler struct {
-	userService user.UserService
+	userService services.UserService
 }
 
-func NewUserHandler(userService user.UserService) userHandler {
+func NewUserHandler(userService services.UserService) userHandler {
 	return userHandler{userService: userService}
 }
 
