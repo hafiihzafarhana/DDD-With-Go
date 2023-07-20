@@ -5,6 +5,7 @@ import (
 	repositories "github.com/hafiihzafarhana/DDD-With-Go/internal/domain/repository"
 	services "github.com/hafiihzafarhana/DDD-With-Go/internal/domain/service"
 	"github.com/hafiihzafarhana/DDD-With-Go/internal/infrastructure/api/handlers"
+	"github.com/hafiihzafarhana/DDD-With-Go/internal/infrastructure/api/middlewares"
 	"gorm.io/gorm"
 )
 
@@ -14,5 +15,11 @@ func UserRoute(r *gin.RouterGroup, db *gorm.DB) {
 	userHandler := handlers.NewUserHandler(userService)
 
 	routeGroup := r.Group("/users")
-	routeGroup.POST("/register", userHandler.Register)
+	{
+		routeGroup.POST("/register", userHandler.Register)
+		routeGroup.POST("/login", userHandler.Login)
+
+		routeGroup.Use(middlewares.Authenticate)
+		routeGroup.GET("/", userHandler.GetAllUser)
+	}
 }

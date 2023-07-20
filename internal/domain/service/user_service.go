@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	repositories "github.com/hafiihzafarhana/DDD-With-Go/internal/domain/repository"
 	"github.com/hafiihzafarhana/DDD-With-Go/internal/infrastructure/dtos"
 	"github.com/hafiihzafarhana/DDD-With-Go/internal/infrastructure/interfaces"
@@ -11,6 +9,7 @@ import (
 
 type UserService interface {
 	Register(payload dtos.NewRegisterRequest) (*interfaces.NewRegisterResponse, errors.MessageErr)
+	Login(payload dtos.NewLoginRequest) (*interfaces.NewLoginResponse, errors.MessageErr)
 }
 
 type userService struct {
@@ -23,7 +22,7 @@ func NewUserService(userRepo repositories.UserRepository) UserService {
 
 func (u *userService) Register(payload dtos.NewRegisterRequest) (*interfaces.NewRegisterResponse, errors.MessageErr) {
 	user := payload.RegisterRequestToEntity()
-	fmt.Println(user)
+
 	err := user.HashPassword()
 	if err != nil {
 		return nil, err
@@ -39,6 +38,28 @@ func (u *userService) Register(payload dtos.NewRegisterRequest) (*interfaces.New
 		FullName:  createdUser.Full_name,
 		Email:     createdUser.Email,
 		CreatedAt: createdUser.CreatedAt,
+	}
+
+	return response, nil
+}
+
+func (u *userService) Login(payload dtos.NewLoginRequest) (*interfaces.NewLoginResponse, errors.MessageErr) {
+	user := payload.LoginRequestToEntity()
+
+	getUser, err := u.userRepo.GetUserByEmail(user)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := getUser.ComparePassword(user.Password); err != nil {
+		return nil, err
+	}
+
+	refreshToken, accToken := getUser.GenerateToken()
+
+	response := &interfaces.NewLoginResponse{
+		RefreshToken: refreshToken,
+		AccToken:     accToken,
 	}
 
 	return response, nil

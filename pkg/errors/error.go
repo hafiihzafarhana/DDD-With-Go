@@ -36,6 +36,14 @@ func NewInternalServerError(message string) MessageErr {
 	}
 }
 
+func NewConflictError(message string) MessageErr {
+	return &errData{
+		ErrMessage: message,
+		ErrStatus:  http.StatusConflict,
+		ErrError:   "CONFLICT",
+	}
+}
+
 func NewUnprocessableEntityError(message []string) MessageErr {
 	return &errData{
 		ErrMessage: message,
